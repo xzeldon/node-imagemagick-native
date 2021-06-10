@@ -18,7 +18,7 @@
   "main": "./index.js",
   "scripts": {
     "test": "tap test/test*.js",
-    "install": "node-gyp rebuild"
+    "install": "PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:$PKG_CONFIG_PATH node-gyp rebuild"
   },
   "engines": {
     "node": ">=4"
