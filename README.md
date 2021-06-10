@@ -177,6 +177,7 @@ The `options` argument can have following values:
         flip:           optional. vertical flip, true or false.
         autoOrient:     optional. default: false. Auto rotate and flip using orientation info.
         colorspace:     optional. String: Out file use that colorspace ['CMYK', 'sRGB', ...]
+        liquidRescale   optional. String: rescales image with seam carving.
         debug:          optional. true or false
         ignoreWarnings: optional. true or false
     }
