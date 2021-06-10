@@ -93,6 +93,7 @@ struct convert_im_ctx : im_ctx_base {
     std::string blur;
     std::string background;
     Magick::ColorspaceType colorspace;
+    std::string liquidRescale;
     unsigned int quality;
     int rotate;
     int density;
@@ -494,6 +495,12 @@ void DoConvert(uv_work_t* req) {
         image.density(Magick::Geometry(context->density, context->density));
     }
 
+    if (!context->liquidRescale.empty()) {
+        const char* rescaleDimensions = context->liquidRescale.c_str();
+        image.liquidRescale(Magick::Geometry(rescaleDimensions));
+        if (debug) printf("LiquidRescale: rescale to: %d, %d\n", (int)image.columns(), (int)image.rows());
+    }
+
     if( context->colorspace != Magick::UndefinedColorspace ){
       if (debug) printf( "colorspace: %s\n", MagickCore::CommandOptionToMnemonic(MagickCore::MagickColorspaceOptions, static_cast<ssize_t>(context->colorspace)) );
         image.colorSpace( context->colorspace );
@@ -555,21 +562,22 @@ void GeneratedBlobAfter(uv_work_t* req) {
 // input
 //   info[ 0 ]: options. required, object with following key,values
 //              {
-//                  srcData:     required. Buffer with binary image data
-//                  quality:     optional. 0-100 integer, default 75. JPEG/MIFF/PNG compression level.
-//                  trim:        optional. default: false. trims edges that are the background color.
-//                  trimFuzz:    optional. [0-1) float, default 0. trimmed color distance to edge color, 0 is exact.
-//                  width:       optional. px.
-//                  height:      optional. px.
-//                  resizeStyle: optional. default: "aspectfill". can be "aspectfit", "fill"
-//                  gravity:     optional. default: "Center". used when resizeStyle is "aspectfill"
+//                  srcData:        required. Buffer with binary image data
+//                  quality:        optional. 0-100 integer, default 75. JPEG/MIFF/PNG compression level.
+//                  trim:           optional. default: false. trims edges that are the background color.
+//                  trimFuzz:       optional. [0-1) float, default 0. trimmed color distance to edge color, 0 is exact.
+//                  width:          optional. px.
+//                  height:         optional. px.
+//                  resizeStyle:    optional. default: "aspectfill". can be "aspectfit", "fill"
+//                  gravity:        optional. default: "Center". used when resizeStyle is "aspectfill"
 //                                         can be "NorthWest", "North", "NorthEast", "West",
 //                                         "Center", "East", "SouthWest", "South", "SouthEast", "None"
-//                  format:      optional. one of http://www.imagemagick.org/script/formats.php ex: "JPEG"
-//                  filter:      optional. ex: "Lagrange", "Lanczos". see ImageMagick's magick/option.c for candidates
-//                  blur:        optional. ex: 0.8
-//                  strip:       optional. default: false. strips comments out from image.
-//                  maxMemory:   optional. set the maximum width * height of an image that can reside in the pixel cache memory.
+//                  format:         optional. one of http://www.imagemagick.org/script/formats.php ex: "JPEG"
+//                  filter:         optional. ex: "Lagrange", "Lanczos". see ImageMagick's magick/option.c for candidates
+//                  blur:           optional. ex: 0.8
+//                  strip:          optional. default: false. strips comments out from image.
+//                  maxMemory:      optional. set the maximum width * height of an image that can reside in the pixel cache memory.
+//                  liquidRescale:  optional. rescales image with seam carving.
 //                  debug:       optional. 1 or 0
 //              }
 //   info[ 1 ]: callback. optional, if present runs async and returns result with callback(error, buffer)
@@ -666,6 +674,10 @@ NAN_METHOD(Convert) {
     }
     context->colorspace = colorspace != (-1) ? (Magick::ColorspaceType) colorspace : Magick::UndefinedColorspace;
 
+    Local<Value> liquidRescaleValue = Nan::Get( obj, Nan::New<String>("liquidRescale").ToLocalChecked() ).ToLocalChecked();
+    context->liquidRescale = !liquidRescaleValue->IsUndefined() ?
+        *Nan::Utf8String(liquidRescaleValue) : "";
+
     uv_work_t* req = new uv_work_t();
     req->data = context;
     if(!isSync) {
@@ -737,6 +749,7 @@ void BuildIdentifyResult(uv_work_t *req, Local<Value> *argv) {
         Nan::Set(out, Nan::New<String>("depth").ToLocalChecked(), Nan::New<Integer>(static_cast<int>(context->image.depth())));
         Nan::Set(out, Nan::New<String>("format").ToLocalChecked(), Nan::New<String>(context->image.magick().c_str()).ToLocalChecked());
         Nan::Set(out, Nan::New<String>("colorspace").ToLocalChecked(), Nan::New<String>(MagickCore::CommandOptionToMnemonic(MagickCore::MagickColorspaceOptions, static_cast<ssize_t>(context->image.colorSpace()))).ToLocalChecked());
+        Nan::Set(out, Nan::New<String>("liquidRescale").ToLocalChecked(), Nan::New<String>(context->image.magick().c_str()).ToLocalChecked());
 
         Local<Object> out_density = Nan::New<Object>();
         Magick::Geometry density = context->image.density();
