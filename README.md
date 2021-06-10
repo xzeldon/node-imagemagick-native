@@ -1,4 +1,5 @@
 # node-imagemagick-native
+[![CI](https://github.com/xzeldon/node-imagemagick-native/actions/workflows/ci.yml/badge.svg)](https://github.com/xzeldon/node-imagemagick-native/actions/workflows/ci.yml)
 
 [ImageMagick](http://www.imagemagick.org/)'s [Magick++](http://www.imagemagick.org/Magick++/) binding for [Node](http://nodejs.org/).
 
@@ -7,8 +8,6 @@ Features
   * Native bindings to the C/C++ Magick++ library
   * Async, sync, stream and promises API
   * Support for `convert`, `identify`, `composite`, and other utility functions
-
-[![Build Status](https://travis-ci.org/elad/node-imagemagick-native.png)](https://travis-ci.org/elad/node-imagemagick-native)
 
 Table of contents
 
