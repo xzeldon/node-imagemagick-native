@@ -19,7 +19,7 @@
   "types": "./typings/index.d.ts",
   "scripts": {
     "test": "tap test/test*.js",
-    "install": "PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:$PKG_CONFIG_PATH node-gyp rebuild"
+    "install": "PKG_CONFIG_PATH=/usr/lib/$(uname -p)-linux-gnu/pkgconfig/:$PKG_CONFIG_PATH node-gyp rebuild"
   },
   "engines": {
     "node": ">=4"
