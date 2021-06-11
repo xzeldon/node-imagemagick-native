@@ -12,6 +12,12 @@ export declare module streams {
     export function convert(options: IStreamConvertOptions): stream.Transform;
 }
 
+export declare module promises {
+    export function convert(options: IConvertOptions): Promise<Buffer>;
+    export function identify(options: IIdentifyOptions): Promise<IIdentifyResult>;
+    export function composite(options: ICompositeOptions): Promise<Buffer>;
+}
+
 declare function convert(options: IConvertOptions): Buffer;
 declare function convert(options: IConvertOptions, callback: (err: any, result: Buffer) => void): void;
 declare function identify(options: IIdentifyOptions): IIdentifyResult;
