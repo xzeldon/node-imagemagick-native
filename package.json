@@ -16,6 +16,7 @@
   "author": "Masakazu Ohtsuka <o.masakazu@gmail.com> (http://maaash.jp/)",
   "contributors": [],
   "main": "./index.js",
+  "types": "./typings/index.d.ts",
   "scripts": {
     "test": "tap test/test*.js",
     "install": "PKG_CONFIG_PATH=/usr/lib/x86_64-linux-gnu/pkgconfig/:$PKG_CONFIG_PATH node-gyp rebuild"
