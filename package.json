@@ -1,5 +1,5 @@
 {
-  "name": "imagemagick-native",
+  "name": "@xzeldon/imagemagick-native",
   "description": "ImageMagick's Magick++ bindings for NodeJS",
   "keywords": [
     "imagemagick",
@@ -11,7 +11,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mash/node-imagemagick-native.git"
+    "url": "git://github.com/xzeldon/node-imagemagick-native.git"
   },
   "author": "Masakazu Ohtsuka <o.masakazu@gmail.com> (http://maaash.jp/)",
   "contributors": [],
