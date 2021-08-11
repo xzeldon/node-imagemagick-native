@@ -1,17 +1,51 @@
-name: CI
+name: Build
 on:
   push:
     branches:
-        - master
-
+      - "**"
+    tags-ignore:
+      - "*.*"
+  pull_request:
+    branches:
+      - "**"
 jobs:
   build:
-    runs-on: ubuntu-latest
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, ubuntu-18.04]
+        node: [12, 14, 16]
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install Node v${{ matrix.node }}
+        uses: actions/setup-node@v2
         with:
-          node-version: 14
-      - run: sudo apt-get install libmagick++-dev
-      - run: yarn
-      - run: yarn install
+          node-version: ${{ matrix.node }}
+
+      - name: Install ImageMagick
+        run: sudo apt install libmagick++-dev
+
+      - name: Install dependencies and build 
+        run: npm install
+
+  build_musl:
+    name: Build (musl)
+    runs-on: ubuntu-latest
+    container:
+      image: node:${{ matrix.node }}-alpine
+    strategy:
+      matrix:
+        node: [12, 14, 16]
+    steps:
+      - name: Setup env with Node v${{ matrix.node }}
+        run: |
+          apk add --update
+          apk add --no-cache ca-certificates git curl build-base python3 g++ make imagemagick6-dev
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install dependencies and build
+        run: npm install
