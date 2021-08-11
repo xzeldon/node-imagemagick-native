@@ -24,6 +24,9 @@
   "engines": {
     "node": ">=4"
   },
+  "os": [
+    "linux"
+  ],
   "dependencies": {
     "nan": "2.x"
   },
