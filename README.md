@@ -26,7 +26,7 @@ Table of contents
     * [`version`](#version)
     * [Promises](#promises)
   * [Installation](#installation)
-    * [Linux / Mac OS X](#installation-unix)
+    * [Linux](#installation-unix)
     * [Windows](#installation-windows)
   * [Performance](#performance)
   * [Contributing](#contributing)
@@ -404,64 +404,26 @@ const info = await imagemagick.promises.identify({ /* OPTIONS */ })
 
 <a name='installation-unix'></a>
 
-### Linux / Mac OS X
+### Linux
 
 Install [ImageMagick](http://www.imagemagick.org/) with headers before installing this module.
-Tested with ImageMagick 6.7.7 on CentOS 6 and Mac OS X Lion, Ubuntu 12.04 .
-
-    brew install imagemagick
-
-      or
-
-    sudo yum install ImageMagick-c++ ImageMagick-c++-devel
-
-      or
+Tested with ImageMagick 6.9.10-23 on Ubuntu 20.04 (x86_64, aarch64)
 
     sudo apt-get install libmagick++-dev
 
-Make sure you can find Magick++-config in your PATH. Packages on some newer distributions, such as Ubuntu 16.04, might be missing a link into `/usr/bin`. If that is the case, do this.
+Make sure you can find Magick++-config in your PATH. Packages on some distributions, such as Ubuntu 16.04, might be missing a link into `/usr/bin`. If that is the case, do this.
 
     sudo ln -s `ls /usr/lib/\`uname -p\`-linux-gnu/ImageMagick-*/bin-Q16/Magick++-config | head -n 1` /usr/local/bin/
 
 Then:
 
-    npm install imagemagick-native
-
-**Installation notes**
-
-  * RHEL/CentOS: If the version of ImageMagick required by `node-imagemagick-native` is not available in an official RPM repository, please try the `-last` version offered by Les RPM de Remi, for example:
-
-  ```
-  sudo yum remove -y ImageMagick
-  sudo yum install -y http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
-  sudo yum install -y --enablerepo=remi ImageMagick-last-c++-devel
-  ```
-
-  * Mac OS X: You might need to install `pkgconfig` first:
-
-  ```
-  brew install pkgconfig
-  ```
+    npm install @xzeldon/imagemagick-native
 
 <a name='installation-windows'></a>
 
 ### Windows
 
-Tested on Windows 7 x64.
-
-1. Install Python 2.7.3 only 2.7.3 nothing else works quite right!
-
-    If you use Cygwin ensure you don't have Python installed in Cygwin setup as there will be some confusion about what version to use.
-
-2. Install [Visual Studio C++ 2010 Express](http://www.microsoft.com/en-us/download/details.aspx?id=8279)
-
-3. (64-bit only) [Install Windows 7 64-bit SDK](http://www.microsoft.com/en-us/download/details.aspx?id=8279)
-
-4. Install [Imagemagick dll binary x86 Q16](http://www.imagemagick.org/download/binaries/ImageMagick-6.9.8-4-Q16-x86-dll.exe) or [Imagemagick dll binary x64 Q16](http://www.imagemagick.org/download/binaries/ImageMagick-6.9.8-4-Q16-x64-dll.exe), check for libraries and includes during install.
-
-Then:
-
-    npm install imagemagick-native
+If you have Windows 10, you can use [WSL](https://docs.microsoft.com/en-us/windows/wsl/install-win10). The installation steps are similar to [Linux](#installation-unix).
 
 <a name='performance'></a>
 
