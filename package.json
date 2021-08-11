@@ -27,6 +27,10 @@
   "os": [
     "linux"
   ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ],
   "dependencies": {
     "nan": "2.x"
   },
